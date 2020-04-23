@@ -76,4 +76,21 @@ public class ProductRestController {
 		ResponseEntity<Product> response=new ResponseEntity<>(HttpStatus.OK);
 		return response;
 	}
+
+	@ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleProductNotFound(ProductNotFoundException ex) {
+        Log.error("handlerProductNotFound()", ex);
+        String msg = ex.getMessage();
+        ResponseEntity<String> response = new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+        return response;
+    }
+
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<String> handleAll(Throwable ex) {
+        Log.error("handleAll()", ex);// this will get logged
+        String msg = ex.getMessage();
+        ResponseEntity<String> response = new ResponseEntity<>(msg, HttpStatus.INTERNAL_SERVER_ERROR);
+        return response;
+    }
+
 }
